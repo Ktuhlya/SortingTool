@@ -5,11 +5,21 @@ import java.util.Scanner
 val scan = Scanner(System.`in`)
 
 fun main(args : Array<String>) {
-    if (!args.isEmpty()){
-        if (args.contains("-sortIntegers") ) sortIntegers()
-        else{
-        for (i in args.indices) {
-            when (args[i]){
+    if (!args.isEmpty()) {
+        if (args.contains("-sortingType")) {
+            if (args.contains("byCount")) {
+                if (args.contains("line")) sortingType("line", "byCount")
+                if (args.contains("word")) sortingType("word", "byCount")
+                if (args.contains("long")) sortingType("long", "byCount")
+            }
+            if (args.contains("natural")) {
+                if (args.contains("line")) sortingType("line", "natural")
+                if (args.contains("word")) sortingType("word", "natural")
+                if (args.contains("long")) sortingType("long", "natural")
+            }
+        } else {
+            for (i in args.indices) {
+                when (args[i]) {
                     "long" -> long()
                     "word" -> word()
                     "line" -> line()
@@ -17,7 +27,9 @@ fun main(args : Array<String>) {
             }
         }
     }else word()
+
 }
+
 
 fun line() {
     val list = mutableListOf<String>()
@@ -55,12 +67,59 @@ fun long() {
             " ${(100/list.size) * count}%) ")
 }
 
-fun sortIntegers() {
-   var list = mutableListOf<Int>()
-    while (scan.hasNext()) {
-        list.add(scan.nextInt())
+fun sortingType(type: String, kind: String) {
+   val pair = Pair(type, kind)
+    if (pair.second == "natural"){
+        when(pair.first){
+            "long" -> {
+                var list = mutableListOf<Int>()
+                while (scan.hasNext()) {
+                    list.add(scan.nextInt())
+                }
+                val sorted = list.sortedBy { it }
+                println("Total numbers: ${list.size}.")
+                print("Sorted data: " + sorted.joinToString(" "))
+            }
+            "word" -> {
+                var list = mutableListOf<String>()
+                while (scan.hasNext()) {
+                    list.add(scan.next())
+                }
+                val sorted = list.sortedBy { it }
+                println("Total words: ${list.size}.")
+                print("Sorted data: " + sorted.joinToString(" "))
+            }
+            "line" -> {
+                var list = mutableListOf<String>()
+                while (scan.hasNext()) {
+                    list.add(scan.nextLine())
+                    val sorted = list.sortedBy { it }
+                    println("Total lines: ${list.size}")
+                    println("Sorted data:")
+                    for (i in list.indices){
+                        println(list[i])
+                    }
+                }
+            }
+        }
     }
-    val sorted = list.sortedBy { it}
-    println("Total numbers: ${list.size}.")
-    print("Sorted data: " + sorted.joinToString(" "))
+    if(pair.second == "byCount"){
+        when(pair.first){
+            "long" -> {
+                var list = mutableListOf<Int>()
+                while (scan.hasNext()) {
+                    list.add(scan.nextInt())
+                }
+                val sorted= list.sortedBy { it }
+                val mapList = mutableMapOf<Int,Int>()
+                for (i in sorted.indices){
+                    mapList.set(sorted[i], sorted.count{sorted[i]==it})
+                }
+                println(mapList)
+
+            }
+        }
+    }
+
+
 }
