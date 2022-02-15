@@ -1,6 +1,7 @@
 package sorting
 
 import java.util.Scanner
+import kotlin.time.measureTimedValue
 
 val scan = Scanner(System.`in`)
 
@@ -18,14 +19,14 @@ fun main(args : Array<String>) {
                 if (args.contains("long")) sortingType("long", "natural")
             }
         } else {
-            for (i in args.indices) {
-                when (args[i]) {
-                    "long" -> long()
-                    "word" -> word()
-                    "line" -> line()
+
+                when  {
+                    args.contains("long") -> sortingType("long", "natural")
+                    args.contains("word") -> sortingType("word", "natural")
+                    args.contains("line") -> sortingType("line", "natural")
                 }
             }
-        }
+
     }else word()
 
 }
@@ -111,12 +112,59 @@ fun sortingType(type: String, kind: String) {
                     list.add(scan.nextInt())
                 }
                 val sorted= list.sortedBy { it }
-                val mapList = mutableMapOf<Int,Int>()
+                var mapList = mutableMapOf<Int,Int>()
                 for (i in sorted.indices){
                     mapList.set(sorted[i], sorted.count{sorted[i]==it})
                 }
-                println(mapList)
+               val sortedMap=mapList.toList().sortedBy { (_,values) -> values }.toMap()
+                println("Total numbers: ${list.size}.")
+                for (i in 0 until mapList.size){
+                    val keyList =sortedMap.keys.toMutableList()
+                    val valueList = sortedMap.values.toMutableList()
+                    println("${keyList[i]}: ${valueList[i]} time(s), " +
+                            "${(100/list.size)*valueList[i]}%")
+                }
 
+            }
+            "line" -> {
+                var list = mutableListOf<String>()
+                while (scan.hasNext()){
+                    list.add(scan.nextLine())
+                }
+                var mapList = mutableMapOf<String,Int>()
+               for (i in list.indices){
+                   mapList.set(list[i], list.count{list[i] == it})
+               }
+                var sortedMapF = mapList.toList().sortedBy { (key,_) -> key }.toMap()
+                var sortedMap = sortedMapF.toList().sortedBy { (_,values) -> values }.toMap()
+                    println("Total lines: ${list.size}.")
+                for (i in 0 until  sortedMap.size) {
+                    val keyList = sortedMap.keys.toMutableList()
+                    val valueList = sortedMap.values.toMutableList()
+                    println("${keyList[i]}: ${valueList[i]} time(s), " +
+                            "${(100/list.size)*valueList[i]}%")
+                }
+            }
+
+            "word" -> {
+                var list = mutableListOf<String>()
+                while (scan.hasNext()) {
+                    list.add(scan.next())
+                }
+                var mapList = mutableMapOf<String, Int>()
+                for (i in list.indices){
+                    mapList.set(list[i], list.count{list[i] == it})
+                }
+                var sortedMapF = mapList.toList().sortedBy { (key,_) -> key }.toMap()
+              var  sortedMap = sortedMapF.toList().sortedBy { (_,values) -> values }.toMap()
+               // println(sortedMapF)
+                println("Total words: ${list.size}.")
+                for (i in 0 until sortedMap.size) {
+                    val keyList = sortedMap.keys.toMutableList()
+                    val valueList =sortedMap.values.toMutableList()
+                    println("${keyList[i]}: ${valueList[i]} time(s), " +
+                            "${(100/list.size)*valueList[i]}%")
+                }
             }
         }
     }
