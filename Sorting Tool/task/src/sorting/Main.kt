@@ -1,11 +1,40 @@
 package sorting
 
 import java.util.Scanner
+import kotlin.system.exitProcess
 import kotlin.time.measureTimedValue
 
 val scan = Scanner(System.`in`)
+val validParams = arrayOf("-dataType","long", "word", "line",
+    "-sortingType", "natural", "byCount")
 
 fun main(args : Array<String>) {
+    if (!args.isEmpty()){
+        for (i in args.indices ){
+            if (!validParams.contains(args[i])) {
+                println("${args[i]} is not a valid parameter. It will be skipped.")
+                exitProcess(0)
+            }
+        }
+    }
+    if (args.contains("-sortingType")){
+        if ((args.contains("byCount")) || (args.contains("natural"))) {
+
+        }else{
+            println("No sorting type defined!")
+            exitProcess(0)
+        }
+    }
+    if (args.contains("-dataType")){
+
+        }else{
+            if ((args.contains("line")) || (args.contains("word"))
+            && (!args.contains("word"))) {
+            println("No data type defined!")
+            exitProcess(0)
+
+        }
+    }
     if (!args.isEmpty()) {
         if (args.contains("-sortingType")) {
             if (args.contains("byCount")) {
@@ -27,46 +56,10 @@ fun main(args : Array<String>) {
                 }
             }
 
-    }else word()
-
-}
-
-
-fun line() {
-    val list = mutableListOf<String>()
-    while (scan.hasNext()) {
-        list.add(scan.nextLine())
     }
-    val max = list.maxByOrNull { it.length }
-    val count = list.count{it == max}
-    println("Total lines: ${list.size}.")
-    println("The longest line:\n$max\n ($count time(s)," +
-            " ${(100 / list.size) * count}%) ")
+
 }
 
-fun word() {
-    val list = mutableListOf<String>()
-    while (scan.hasNext()) {
-        list.add(scan.next().toString())
-    }
-    val max =list.maxByOrNull { it.length }
-    val count = list.count { it == max }
-    println("Total words: ${list.size}.")
-    println("The longest word: $max ($count time(s)," +
-            " ${(100 / list.size) * count}%) ")
-}
-
-fun long() {
-    val list = mutableListOf<Int>()
-    while (scan.hasNext()) {
-        list.add(scan.nextInt())
-    }
-    val max = list.maxOf { it }
-    val count = list.count { it == max }
-    println("Total numbers: ${list.size}.")
-    println("The greatest number: $max ($count time(s)," +
-            " ${(100/list.size) * count}%) ")
-}
 
 fun sortingType(type: String, kind: String) {
    val pair = Pair(type, kind)
@@ -171,3 +164,44 @@ fun sortingType(type: String, kind: String) {
 
 
 }
+
+
+/*
+
+fun line() {
+    val list = mutableListOf<String>()
+    while (scan.hasNext()) {
+        list.add(scan.nextLine())
+    }
+    val max = list.maxByOrNull { it.length }
+    val count = list.count{it == max}
+    println("Total lines: ${list.size}.")
+    println("The longest line:\n$max\n ($count time(s)," +
+            " ${(100 / list.size) * count}%) ")
+}
+
+fun word() {
+    val list = mutableListOf<String>()
+    while (scan.hasNext()) {
+        list.add(scan.next().toString())
+    }
+    val max =list.maxByOrNull { it.length }
+    val count = list.count { it == max }
+    println("Total words: ${list.size}.")
+    println("The longest word: $max ($count time(s)," +
+            " ${(100 / list.size) * count}%) ")
+}
+
+fun long() {
+    val list = mutableListOf<Int>()
+    while (scan.hasNext()) {
+        list.add(scan.nextInt())
+    }
+    val max = list.maxOf { it }
+    val count = list.count { it == max }
+    println("Total numbers: ${list.size}.")
+    println("The greatest number: $max ($count time(s)," +
+            " ${(100/list.size) * count}%) ")
+}
+
+ */
